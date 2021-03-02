@@ -1,14 +1,20 @@
+#include <stdlib.h>
 struct arraylist{
     int size;
-    int hi[0]; 
+    int *con; 
 };
 
 typedef struct arraylist *ArrayList;
 
 /**
- * Creates an ArrayList
+ * Creates an ArrayList with default size
  **/
 ArrayList al_create();
+
+/**
+ * Creates an ArrayList with the given initial size
+ **/
+ArrayList al_create(int);
 
 /**
  * Deallocates an ArrayList
@@ -23,7 +29,7 @@ void al_add(ArrayList, int);
 /**
  * Gets the value at the given index
  **/
-int al_get(ArrayList, int);
+int al_get(const ArrayList, int);
 
 /**
  * Removes the value at the given index from the list
@@ -39,3 +45,8 @@ void al_set(ArrayList, int, int);
  * Clears the list
  **/
 void al_clear(ArrayList);
+
+/**
+ * Gives the size of the array list
+ **/
+int al_size(const ArrayList);
