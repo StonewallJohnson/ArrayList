@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 struct arraylist{
     int size;
     int elements;
@@ -10,7 +11,7 @@ typedef struct arraylist *ArrayList;
 /**
  * Creates an ArrayList with default size
  **/
-ArrayList al_create();
+ArrayList al_createDefault();
 
 /**
  * Creates an ArrayList with the given initial size
@@ -57,7 +58,7 @@ int al_size(const ArrayList);
  * a new one with the same elements
  * but double the space
  **/
-ArrayList al_resize(ArrayList);
+int *al_resize(ArrayList);
 
 /**
  * Returns a string representation of the

@@ -1,16 +1,18 @@
 #include "ArrayList.h"
 
 ArrayList al_create(int initialSize){
-    ArrayList new = malloc(sizeof(struct arraylist));
+    ArrayList new = (ArrayList) malloc(sizeof(struct arraylist));
     if(new == NULL){
         //check for allocation
+        printf("Could not allocate space for ArrayList!");
         exit(1);
     }
 
     new->size = initialSize;
-    new->con = malloc(sizeof(int) * initialSize);
+    new->con = (int *) malloc(sizeof(int) * initialSize);
     if(new->con == NULL){
         //check for allocation
+        printf("Could not allocate space for ArrayList!");
         exit(1);
     }
 
@@ -18,7 +20,7 @@ ArrayList al_create(int initialSize){
     return new;
 }
 
-ArrayList al_create(){
+ArrayList al_createDefault(){
     return al_create(50);
 }
 
@@ -28,12 +30,12 @@ void al_destroy(ArrayList toDel){
 }
 
 void al_add(ArrayList this, int val){
-    //TODO: resize me
-    al_set(this, this->elements - 1, val);
+    al_set(this, this->elements, val);
 }
 
 int al_get(const ArrayList this, int index){
     if(index < 0 || index > this->size){
+        printf("Can not get from that index!");
         exit(1);
     }
 
@@ -43,18 +45,18 @@ int al_get(const ArrayList this, int index){
 int al_remove(ArrayList this, int index){
     int temp = this->con[index];
     this->con[index] = 0;
-    for(int *i = this->con + index + 1; i <= this->con + this->size - 1; i++){
+    for(int *i = this->con + index + 1; i <= this->con + this->elements - 1; i++){
         //from index + 1 to last index
         *(i - 1) = *i;
     }
-    this->size--;
+    this->elements--;
     return temp;
 }
 
 void al_set(ArrayList this, int index, int val){
     if(index >= this->size){
-        this = al_resize(this);
-        this->con[index] = val;
+        //need to add more space
+        this->con = al_resize(this);
     }
     this->con[index] = val;
     this->elements++;
@@ -71,14 +73,13 @@ int al_size(const ArrayList this){
     return this->elements;
 }
 
-ArrayList al_resize(ArrayList old){
-    ArrayList new = al_create(old->size * 2);
-    for(int i = 0; i < old->elements; i++){
+int *al_resize(ArrayList this){
+    int *new = malloc(sizeof(int) * this->size * 2);
+    for(int i = 0; i < this->elements; i++){
         //for every element in old
-        new->con[i] = old->con[i];
+        new[i] = this->con[i];
     }
-
-    al_destroy(old);
+    this->size *= 2; 
     return new;
 }
 
