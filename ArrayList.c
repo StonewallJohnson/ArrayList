@@ -7,13 +7,14 @@ ArrayList al_create(int initialSize){
         exit(1);
     }
 
-    new->size = 0;
+    new->size = initialSize;
     new->con = malloc(sizeof(int) * initialSize);
     if(new->con == NULL){
         //check for allocation
         exit(1);
     }
-    
+
+    new->elements = 0;    
     return new;
 }
 
@@ -28,8 +29,7 @@ void al_destroy(ArrayList toDel){
 
 void al_add(ArrayList this, int val){
     //TODO: resize me
-    al_set(this, this->size - 1, val);
-    this->size++;
+    al_set(this, this->elements - 1, val);
 }
 
 int al_get(const ArrayList this, int index){
@@ -52,7 +52,12 @@ int al_remove(ArrayList this, int index){
 }
 
 void al_set(ArrayList this, int index, int val){
+    if(index >= this->size){
+        this = al_resize(this);
+        this->con[index] = val;
+    }
     this->con[index] = val;
+    this->elements++;
 }
 
 void al_clear(ArrayList this){
@@ -63,5 +68,24 @@ void al_clear(ArrayList this){
 }
 
 int al_size(const ArrayList this){
-    return this->size;
+    return this->elements;
 }
+
+ArrayList al_resize(ArrayList old){
+    ArrayList new = al_create(old->size * 2);
+    for(int i = 0; i < old->elements; i++){
+        //for every element in old
+        new->con[i] = old->con[i];
+    }
+
+    al_destroy(old);
+    return new;
+}
+
+// char *toString(const ArrayList this){
+//     char *str = malloc(sizeof(char) * this->elements);
+//     for(int i = 0; i < this->elements; i++, str++){
+//         //for every element in the list
+//         *str = this->con[i];
+//     }
+// }

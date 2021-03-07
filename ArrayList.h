@@ -1,6 +1,7 @@
 #include <stdlib.h>
 struct arraylist{
     int size;
+    int elements;
     int *con; 
 };
 
@@ -50,3 +51,16 @@ void al_clear(ArrayList);
  * Gives the size of the array list
  **/
 int al_size(const ArrayList);
+
+/**
+ * Takes an old array list and creates
+ * a new one with the same elements
+ * but double the space
+ **/
+ArrayList al_resize(ArrayList);
+
+/**
+ * Returns a string representation of the
+ * array list
+ **/
+//char *toString(const ArrayList);
