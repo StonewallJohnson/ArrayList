@@ -79,7 +79,8 @@ int *al_resize(ArrayList this){
         //for every element in old
         new[i] = this->con[i];
     }
-    this->size *= 2; 
+    this->size *= 2;
+    free(this->con); 
     return new;
 }
 
